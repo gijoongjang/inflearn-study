@@ -70,3 +70,10 @@ public class OrderServiceImpl implements OrderService {
 }
 ```
 - @RequiredArgsConstructor 기능을 사용하면 final이 붙은 필드를 모아서 생성자를 자동으로 만들어준다.
+
+### 조회 빈이 2개 이상일 때
+
+1. 필드 명을 빈 이름으로 변경한다.
+2. @Qualifier 사용
+3. @Primary 사용
+
