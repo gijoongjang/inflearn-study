@@ -5,12 +5,14 @@ import com.study.springbasic.discount.FixDiscountPolicy;
 import com.study.springbasic.member.Member;
 import com.study.springbasic.member.MemberRepository;
 import com.study.springbasic.member.MemoryMemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class OrderServiceImpl implements OrderService {
 
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
 
+    @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
