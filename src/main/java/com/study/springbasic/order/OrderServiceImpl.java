@@ -6,6 +6,7 @@ import com.study.springbasic.member.Member;
 import com.study.springbasic.member.MemberRepository;
 import com.study.springbasic.member.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 public class OrderServiceImpl implements OrderService {
 
@@ -13,7 +14,7 @@ public class OrderServiceImpl implements OrderService {
     private final DiscountPolicy discountPolicy;
 
     @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("mainDiscountPolicy")DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
