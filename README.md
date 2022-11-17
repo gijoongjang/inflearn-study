@@ -1,4 +1,4 @@
-# 김영한님 스프링 MVC 1편 학습
+# Spring MVC part1
 
 ## 스프링 MVC 구조
 
