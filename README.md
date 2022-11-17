@@ -21,3 +21,15 @@
 3. InternalResourceView //forward() 호출해 처리하는 경우 사용
 4. view.render()        //jsp 실행
 
+## HttpMessageConverter
+
+Json 데이터를 Body에 직접 읽거나 쓰는 경우 HttpMessageConverter 작동<br/>
+@ResponseBody가 붙어있는 경우 ViewResolver 대신 HttpMessageConverter가 작동
+
+### HttpMessageConverter 종류
+
+- ByteArrayHttpMessageConverter : byte[]를 처리 Response MediaType은 application/octet-stream
+- StringHttpMessageConverter : String을 처리 Response MediaType은 text/plain
+- MappingJackson2HttpMessageConverter : Json을 처리 Response MediaType은 application/json
+
+작동 순위는 ByteArrayHttpMessageConverter - StringHttpMessageConverter - MappingJackson2HttpMessageConverter 순
