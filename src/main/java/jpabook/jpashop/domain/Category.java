@@ -30,7 +30,7 @@ public class Category {
     /**
      * 계층형
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Category parent;
 
