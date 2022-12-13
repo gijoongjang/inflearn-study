@@ -19,14 +19,14 @@ public class MemberApiController {
 
     private final MemberService memberService;
 
-    @PostConstruct
-    public void init() {
-        for(int i = 1; i <= 10; i++) {
-            Member member = new Member();
-            member.setName("test"+i);
-            memberService.join(member);
-        }
-    }
+//    @PostConstruct
+//    public void init() {
+//        for(int i = 1; i <= 10; i++) {
+//            Member member = new Member();
+//            member.setName("test"+i);
+//            memberService.join(member);
+//        }
+//    }
 
     @GetMapping("/api/v1/members")
     public List<Member> membersV1() {
