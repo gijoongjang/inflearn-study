@@ -82,3 +82,115 @@ from 절에서의 서브쿼리(인라인 뷰)는 지원하지 않는다.
 2. 애플리케이션에서 쿼리를 2번 분리해서 실행한다.
 3. nativeSQL을 사용한다.
  
+## 프로젝션과 결과 반환 - 기본
+### 프로젝션 대상이 하나인경우
+ - 프로젝션 대상이 하나면 타입을 명확하게 지정할 수 있다.
+ ```java
+ List<String> result = queryFactory
+       .select(member.username)
+       .from(member)
+       .fetch();
+ ```
+ - 프로젝션 대상이 둘 이상이면 튜플이나 DTO로 조회
+### 튜플 조회
+```java
+List<Tuple> result = queryFactory
+       .select(member.username, member.age)
+       .from(member)
+       .fetch();
+
+result.forEach(tuple -> {
+   String username = tuple.get(member.username); //이런식으로 꺼내 쓰면됨
+   Integer age = tuple.get(member.age);
+});
+```
+
+## 프로젝션과 결과 반환 - DTO 조회
+### 프로퍼티 접근 - Setter
+```java
+List<MemberDto> result = queryFactory
+        .select(Projections.bean(MemberDto.class,
+                member.username,
+                member.age))
+        .from(member)
+        .fetch();
+```
+### 필드 직접 접근
+```java
+List<MemberDto> result = queryFactory
+        .select(Projections.fields(MemberDto.class,
+                member.username,
+                member.age))
+        .from(member)
+        .fetch();
+```
+### 별칭이 다를 경우
+```java
+@Data
+public class UserDto {
+    private String name;
+    private int age;
+}
+List<UserDto> fetch = queryFactory
+         .select(Projections.fields(UserDto.class,
+                 member.username.as("name"),
+                 ExpressionUtils.as(
+                          JPAExpressions
+                                  .select(memberSub.age.max())
+                                  .from(memberSub), "age")
+                 )
+          )
+          .from(member)
+          .fetch();
+```
+- 프로퍼티나, 필드 접근 생성 방식에서 이름이 다를 떄 해결 방안
+- ExpressionUtils.as(source, alias) : 필드나, 서브 쿼리에 별칭 적용
+- username.as("memberName") : 필드에 별칭 적용
+### 생성자 사용
+```java
+List<MemberDto> result = queryFactory
+        .select(Projections.constructor(MemberDto.class,
+                member.username,
+                member.age))
+        .from(member)
+        .fetch();
+```
+## 프로젝션과 결과 반환 - @QueryProjection
+생성자에 @QueryProjection 선언해서 사용
+```java
+List<MemberDto> result = queryFactory
+        .select(new QMemberDto(member.username, member.age))
+        .from(member)
+        .fetch();
+```
+- 장점 : 컴파일러로 타입을 체크할 수 있다.
+- 단점 : DTO와 QueryDSL 연관관계가 생겨버리고 DTO까지 Q파일을 생성해야한다.
+
+## 동적 쿼리
+ - BooleanBuilder 사용
+ - Where 다중 파라미터 사용
+그중 Where 다중 파라미터는 가독성이 높아지고 메서드를 재활용 할 수 있으며, 조합해서 사용 할 수 있다는 장점이 있음
+
+## 수정, 삭제 벌크 연산
+```java
+long updatedCount = queryFactory
+        .update(member)
+        .set(member.username, "수정")
+        .where(member.age.lt(20))
+        .execute();
+flush(); //
+clear(); //
+
+long deletedCount = queryFactory
+            .delete(member)
+            .where(member.age.gt(18))
+            .execute();
+```
+영속성 컨텍스트에 있는 엔티티를 무시하고 실행되기 때문에 배치 쿼리 실행시 영속성 컨텍스트를 초기화 하는 것이 안전하고 맘편하다.
+
+
+
+
+
+
+  
