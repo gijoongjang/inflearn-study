@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-class IntergerToStringConverterTest {
+class IntegerToStringConverterTest {
 
     @Test
     void stringToInteger() {
@@ -16,7 +16,7 @@ class IntergerToStringConverterTest {
     
     @Test
     void IntergerToString() {
-        IntergerToStringConverter converter = new IntergerToStringConverter();
+        IntegerToStringConverter converter = new IntegerToStringConverter();
         String result = converter.convert(10);
         assertThat(result).isEqualTo("10");
     }

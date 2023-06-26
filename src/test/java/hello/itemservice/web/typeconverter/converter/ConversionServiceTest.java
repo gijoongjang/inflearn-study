@@ -13,7 +13,7 @@ public class ConversionServiceTest {
 
         DefaultConversionService conversionService = new DefaultConversionService();
         conversionService.addConverter(new StringToIntegerConverter());
-        conversionService.addConverter(new IntergerToStringConverter());
+        conversionService.addConverter(new IntegerToStringConverter());
         conversionService.addConverter(new StringToIpPortConverter());
         conversionService.addConverter(new IpPortToStringConverter());
 
